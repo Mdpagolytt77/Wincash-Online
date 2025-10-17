@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wincash Loading</title>
+
+<!-- Google Font Import -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    background: #0b0b20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* 🔥 Intro Container */
+  .intro {
+    text-align: center;
+    position: relative;
+  }
+
+  /* 💚 Premium Wincash Text - Matching Homepage Style */
+  .intro h1 {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 65px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 0;
+    animation: glow 2.5s infinite alternate;
+  }
+
+  .intro h1 .win {
+    color: white;
+    text-shadow:
+      0 0 10px rgba(255, 255, 255, 0.6),
+      0 0 25px rgba(255, 255, 255, 0.4);
+  }
+
+  .intro h1 .cash {
+    color: #33ff77;
+    font-style: italic;
+    text-shadow:
+      0 0 10px rgba(51, 255, 119, 0.6),
+      0 0 25px rgba(51, 255, 119, 0.4),
+      0 0 45px rgba(0, 255, 204, 0.3);
+  }
+
+  @keyframes glow {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.05);
+    }
+  }
+
+  /* 🔥 Animated Flame Effect behind text */
+  .flame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(51,255,119,0.3) 10%, transparent 60%);
+    border-radius: 50%;
+    filter: blur(40px);
+    transform: translate(-50%, -50%);
+    animation: flameMove 2.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes flameMove {
+    0% { transform: translate(-50%, -52%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -48%) scale(1.1); opacity: 0.8; }
+    100% { transform: translate(-50%, -52%) scale(1); opacity: 0.6; }
+  }
+
+  /* 🔄 Loading Text - Smaller and more elegant */
+  .loading {
+    font-size: 14px;
+    color: #b8a3ff;
+    margin-top: 20px;
+    letter-spacing: 2px;
+    font-weight: 300;
+  }
+
+  .co-text {
+    color: #b8a3ff;
+    font-size: 24px;
+    margin-left: 5px;
+  }
+
+  /* 🔄 New Circular Loader */
+  .circular-loader {
+    width: 50px;
+    height: 50px;
+    margin: 20px auto;
+    position: relative;
+  }
+
+  .circular-loader::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-top: 3px solid #33ff77;
+    border-right: 3px solid #00ffcc;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .circular-loader::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid transparent;
+    border-bottom: 2px solid #b8a3ff;
+    border-left: 2px solid #b8a3ff;
+    border-radius: 50%;
+    animation: spinReverse 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes spinReverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+
+  /* ✨ Glowing effect around loader */
+  .loader-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle, rgba(51,255,119,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(10px);
+    transform: translate(-50%, -50%);
+    animation: pulseGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.9); }
+    100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="intro">
+    <div class="flame"></div>
+    <h1>
+      <span class="win">Win</span><span class="cash">cash</span><span class="co-text">.co</span>
+    </h1>
+    
+    <!-- Circular Loader -->
+    <div style="position: relative;">
+      <div class="loader-glow"></div>
+      <div class="circular-loader"></div>
+    </div>
+    
+    <div class="loading">LOADING</div>
+  </div>
+
+  <script>
+    // ⏳ Redirect to homepage after loading (2 seconds)
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 2000);
+  </script>
+
+</body>
+</html>
