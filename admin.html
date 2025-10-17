@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - Wincash</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root{
+    --bg:#0b0b20;
+    --header:#151532;
+    --card:#1d1f2e;
+    --accent:#b8a3ff;
+    --green:#33ff77;
+    --red:#ff3366;
+  }
+
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+
+  body{
+    font-family:'Poppins', sans-serif;
+    background:var(--bg);
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+  }
+
+  .admin-container{
+    background:var(--header);
+    padding:40px;
+    border-radius:20px;
+    width:100%;
+    max-width:400px;
+    box-shadow:0 15px 50px rgba(0,0,0,0.6);
+  }
+
+  .admin-container h2{
+    text-align:center;
+    margin-bottom:10px;
+    font-size:32px;
+    background:linear-gradient(90deg, #ff3366, #ff6b6b);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+
+  .admin-container p{
+    text-align:center;
+    margin-bottom:30px;
+    color:#bbb;
+  }
+
+  .form-group{
+    margin-bottom:20px;
+  }
+
+  .form-group label{
+    display:block;
+    margin-bottom:8px;
+    color:#ddd;
+    font-size:14px;
+  }
+
+  .form-group input{
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid #333366;
+    background:rgba(30,30,50,0.8);
+    color:white;
+    font-size:16px;
+    font-family:'Poppins', sans-serif;
+    transition:all 0.3s;
+  }
+
+  .form-group input:focus{
+    outline:none;
+    border-color:var(--red);
+    box-shadow:0 0 10px rgba(255,51,102,0.3);
+  }
+
+  .admin-btn{
+    width:100%;
+    padding:16px;
+    background:linear-gradient(45deg, #ff3366, #ff6b6b);
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.3s;
+    font-family:'Poppins', sans-serif;
+    margin-top:10px;
+  }
+
+  .admin-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 25px rgba(255,51,102,0.4);
+  }
+
+  .back-link{
+    text-align:center;
+    margin-top:20px;
+    color:#bbb;
+  }
+
+  .back-link a{
+    color:var(--accent);
+    text-decoration:none;
+    font-weight:600;
+  }
+
+  .back-link a:hover{
+    text-decoration:underline;
+  }
+</style>
+</head>
+<body>
+
+<div class="admin-container">
+  <h2>Admin Login</h2>
+  <p>Access admin dashboard</p>
+
+  <form onsubmit="adminLogin(event)">
+    <div class="form-group">
+      <label>Admin Username</label>
+      <input type="text" id="adminUsername" placeholder="Enter admin username" required>
+    </div>
+
+    <div class="form-group">
+      <label>Admin Password</label>
+      <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+    </div>
+
+    <button type="submit" class="admin-btn">
+      <i class="fas fa-lock"></i> Login as Admin
+    </button>
+  </form>
+
+  <div class="back-link">
+    <a href="home.html">← Back to Home</a>
+  </div>
+</div>
+
+<script>
+function adminLogin(event) {
+  event.preventDefault();
+  
+  const username = document.getElementById('adminUsername').value.trim();
+  const password = document.getElementById('adminPassword').value;
+
+  // Hardcoded admin credentials (production-এ database use করুন)
+  const adminUsername = "admin";
+  const adminPassword = "admin123";
+
+  if(username === adminUsername && password === adminPassword) {
+    // Admin login successful
+    localStorage.setItem('adminLoggedIn', 'true');
+    window.location.href = 'admin-dashboard.html';
+  } else {
+    alert('Invalid admin credentials!');
+  }
+}
+</script>
+
+</body>
+</html>

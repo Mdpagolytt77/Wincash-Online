@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Wincash</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root{
+    --bg:#0b0b20;
+    --header:#151532;
+    --card:#1d1f2e;
+    --accent:#b8a3ff;
+    --green:#33ff77;
+    --offer-bg:#191943;
+  }
+
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+
+  body{
+    font-family:'Poppins', sans-serif;
+    background:var(--bg);
+    color:white;
+    min-height:100vh;
+  }
+
+  /* Loading Screen */
+  .loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+  }
+
+  .intro {
+    text-align: center;
+    position: relative;
+  }
+
+  .intro h1 {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 65px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 0;
+    animation: glow 2.5s infinite alternate;
+  }
+
+  .intro h1 .win {
+    color: white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 25px rgba(255, 255, 255, 0.4);
+  }
+
+  .intro h1 .cash {
+    color: #33ff77;
+    font-style: italic;
+    text-shadow: 0 0 10px rgba(51, 255, 119, 0.6), 0 0 25px rgba(51, 255, 119, 0.4), 0 0 45px rgba(0, 255, 204, 0.3);
+  }
+
+  @keyframes glow {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+  }
+
+  .flame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(51,255,119,0.3) 10%, transparent 60%);
+    border-radius: 50%;
+    filter: blur(40px);
+    transform: translate(-50%, -50%);
+    animation: flameMove 2.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes flameMove {
+    0% { transform: translate(-50%, -52%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -48%) scale(1.1); opacity: 0.8; }
+    100% { transform: translate(-50%, -52%) scale(1); opacity: 0.6; }
+  }
+
+  .loading {
+    font-size: 14px;
+    color: #b8a3ff;
+    margin-top: 20px;
+    letter-spacing: 2px;
+    font-weight: 300;
+  }
+
+  .co-text {
+    color: #b8a3ff;
+    font-size: 24px;
+    margin-left: 5px;
+  }
+
+  .circular-loader {
+    width: 50px;
+    height: 50px;
+    margin: 20px auto;
+    position: relative;
+  }
+
+  .circular-loader::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-top: 3px solid #33ff77;
+    border-right: 3px solid #00ffcc;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .circular-loader::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid transparent;
+    border-bottom: 2px solid #b8a3ff;
+    border-left: 2px solid #b8a3ff;
+    border-radius: 50%;
+    animation: spinReverse 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes spinReverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+
+  .loader-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle, rgba(51,255,119,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(10px);
+    transform: translate(-50%, -50%);
+    animation: pulseGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.9); }
+    100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+  }
+
+  /* Header */
+  .header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 5%;
+    background:var(--header);
+    box-shadow:0 2px 15px rgba(0,0,0,0.4);
+    position:sticky;
+    top:0;
+    z-index:100;
+  }
+
+  .logo{
+    font-size:32px;
+    font-weight:600;
+    font-family:'Brush Script MT', cursive;
+    cursor:pointer;
+  }
+
+  .logo .win{color:white;}
+  .logo span{color:var(--green); font-style:italic;}
+
+  .user-menu{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:15px;
+  }
+
+  .user-info{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:8px 15px;
+    border-radius:10px;
+    transition:all 0.3s;
+  }
+
+  .user-info:hover{
+    background:rgba(255,255,255,0.1);
+  }
+
+  .user-avatar{
+    width:40px;
+    height:40px;
+    background:linear-gradient(45deg, var(--green), var(--accent));
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:600;
+    font-size:18px;
+  }
+
+  .user-name{
+    font-weight:600;
+    font-size:16px;
+  }
+
+  .dropdown-menu{
+    position:absolute;
+    top:60px;
+    right:0;
+    background:var(--header);
+    border-radius:15px;
+    min-width:200px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    display:none;
+    z-index:1000;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.1);
+  }
+
+  .dropdown-menu.show{
+    display:block;
+    animation:slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown{
+    from{opacity:0; transform:translateY(-10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .dropdown-item{
+    padding:15px 20px;
+    cursor:pointer;
+    transition:all 0.3s;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+
+  .dropdown-item:last-child{
+    border-bottom:none;
+  }
+
+  .dropdown-item:hover{
+    background:rgba(255,255,255,0.1);
+  }
+
+  .dropdown-item i{
+    width:20px;
+    text-align:center;
+    color:var(--accent);
+  }
+
+  .dropdown-item.logout i{
+    color:#ff4444;
+  }
+
+  /* Success Message */
+  .success-message{
+    background:linear-gradient(135deg, #11998e, #38ef7d);
+    color:white;
+    text-align:center;
+    padding:15px;
+    margin:0 5%;
+    border-radius:10px;
+    margin-top:10px;
+    animation:fadeIn 0.5s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+
+  @keyframes fadeIn{
+    from{opacity:0; transform:translateY(-10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* Earnings Ticker */
+  .ticker-container{
+    background:#0f0f2f;
+    border-top:1px solid #1f1f3f;
+    border-bottom:1px solid #1f1f3f;
+    padding:12px 0;
+    overflow:hidden;
+    position:relative;
+  }
+
+  .ticker-track{
+    display:inline-block;
+    white-space:nowrap;
+    animation:moveLeft 30s linear infinite;
+    padding-left:100%;
+  }
+
+  .ticker-item{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    background:var(--offer-bg);
+    padding:8px 16px;
+    margin:0 10px;
+    border-radius:8px;
+    border:1px solid #333366;
+    font-size:14px;
+  }
+
+  .ticker-user{
+    color:#00ff99;
+    font-weight:bold;
+  }
+
+  @keyframes moveLeft{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-100%);}
+  }
+
+  /* Dashboard Layout */
+  .dashboard-container{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:30px;
+    padding:30px 5%;
+    max-width:1400px;
+    margin:0 auto;
+  }
+
+  /* Sidebar */
+  .sidebar{
+    background:var(--header);
+    border-radius:20px;
+    padding:30px;
+    height:fit-content;
+    position:sticky;
+    top:100px;
+  }
+
+  .welcome-section{
+    text-align:center;
+    margin-bottom:30px;
+    padding-bottom:20px;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+
+  .welcome-section h2{
+    font-size:24px;
+    margin-bottom:10px;
+    background:linear-gradient(90deg, white, var(--green));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+
+  .balance-card{
+    background:linear-gradient(135deg, var(--card), #252740);
+    border-radius:15px;
+    padding:25px;
+    text-align:center;
+    margin-bottom:25px;
+    border:1px solid rgba(255,255,255,0.1);
+  }
+
+  .balance-amount{
+    font-size:36px;
+    font-weight:700;
+    margin:10px 0;
+    background:linear-gradient(90deg, var(--green), var(--accent));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+
+  .balance-label{
+    color:#aaa;
+    font-size:14px;
+  }
+
+  .quick-stats{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+  }
+
+  .stat-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 15px;
+    background:rgba(255,255,255,0.05);
+    border-radius:10px;
+    transition:all 0.3s;
+  }
+
+  .stat-item:hover{
+    background:rgba(255,255,255,0.1);
+    transform:translateX(5px);
+  }
+
+  .stat-info{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .stat-icon{
+    width:35px;
+    height:35px;
+    background:var(--accent);
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:black;
+  }
+
+  .stat-value{
+    font-weight:600;
+    color:var(--green);
+  }
+
+  /* Main Content */
+  .main-content{
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+  }
+
+  .section-title{
+    font-size:28px;
+    margin-bottom:20px;
+    background:linear-gradient(90deg, white, var(--accent));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  /* Offers Grid */
+  .offers-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:20px;
+    margin-bottom:30px;
+  }
+
+  .offer-card{
+    background:var(--card);
+    border-radius:15px;
+    padding:25px;
+    text-align:center;
+    transition:all 0.3s;
+    border:1px solid rgba(255,255,255,0.1);
+    cursor:pointer;
+  }
+
+  .offer-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    border-color:var(--accent);
+  }
+
+  .offer-name{
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:15px;
+    color:white;
+  }
+
+  .stars{
+    display:flex;
+    justify-content:center;
+    gap:4px;
+    margin-bottom:15px;
+  }
+
+  .star{
+    color:#4a5568;
+    font-size:14px;
+  }
+
+  .star.filled{
+    color:#33ff77;
+  }
+
+  /* Footer */
+  .footer{
+    background:var(--header);
+    padding:40px 20px;
+    margin-top:50px;
+  }
+
+  .footer-content{
+    max-width:1200px;
+    margin:0 auto;
+    text-align:center;
+  }
+
+  .footer-logo{
+    font-size:32px;
+    font-weight:600;
+    font-family:'Brush Script MT', cursive;
+    margin-bottom:20px;
+  }
+
+  .footer-logo .win{color:white;}
+  .footer-logo span{color:var(--green); font-style:italic;}
+
+  .footer-desc{
+    color:#aaa;
+    margin-bottom:30px;
+    max-width:500px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.6;
+  }
+
+  .footer-sections{
+    display:flex;
+    justify-content:center;
+    gap:50px;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+  }
+
+  .footer-section{
+    text-align:center;
+  }
+
+  .footer-section-title{
+    color:#aaa;
+    font-size:14px;
+    margin-bottom:15px;
+  }
+
+  .footer-icons{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+  }
+
+  .footer-icon{
+    width:40px;
+    height:40px;
+    background:var(--accent);
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:black;
+  }
+
+  .footer-stars{
+    display:flex;
+    justify-content:center;
+    gap:5px;
+    margin:15px 0;
+  }
+
+  .footer-star{
+    color:var(--accent);
+    font-size:16px;
+  }
+
+  .footer-star.half{
+    opacity:0.5;
+  }
+
+  .copyright{
+    color:#666;
+    font-size:12px;
+    margin-top:20px;
+  }
+
+  /* Bottom Navigation */
+  .bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:var(--header);
+    border-top:1px solid rgba(255,255,255,0.1);
+    padding:12px 0;
+    display:none;
+  }
+
+  .nav-items{
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+  }
+
+  .nav-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    color:#aaa;
+    font-size:12px;
+  }
+
+  .nav-item.active{
+    color:var(--accent);
+  }
+
+  .nav-dots{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+
+  .nav-dot{
+    width:4px;
+    height:4px;
+    background:#aaa;
+    border-radius:50%;
+  }
+
+  /* Toast */
+  .toast{
+    position:fixed;
+    top:25px;
+    right:25px;
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color:white;
+    padding:18px 30px;
+    border-radius:12px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.4);
+    display:none;
+    align-items:center;
+    gap:15px;
+    z-index:2000;
+    animation:slideInToast 0.4s;
+    max-width:380px;
+  }
+
+  .toast.show{display:flex;}
+
+  .toast.success{
+    background:linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  }
+
+  .toast.error{
+    background:linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+  }
+
+  .toast-icon{font-size:28px;}
+
+  .toast-message{
+    flex:1;
+    font-size:15px;
+    font-weight:500;
+  }
+
+  .toast-close{
+    background:none;
+    border:none;
+    color:white;
+    font-size:24px;
+    cursor:pointer;
+    padding:0;
+    width:auto;
+    margin:0;
+    opacity:0.8;
+  }
+
+  .toast-close:hover{
+    opacity:1;
+    transform:none;
+  }
+
+  @keyframes slideInToast{
+    from{transform:translateX(450px); opacity:0;}
+    to{transform:translateX(0); opacity:1;}
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px){
+    .dashboard-container{
+      grid-template-columns:1fr;
+      gap:20px;
+    }
+    
+    .sidebar{
+      position:static;
+    }
+    
+    .offers-grid{
+      grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px){
+    .header{
+      padding:12px 20px;
+    }
+    
+    .logo{
+      font-size:26px;
+    }
+    
+    .user-name{
+      display:none;
+    }
+    
+    .dashboard-container{
+      padding:20px 15px;
+    }
+    
+    .success-message{
+      margin:10px 15px;
+      font-size:14px;
+    }
+    
+    .offers-grid{
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .balance-amount{
+      font-size:28px;
+    }
+    
+    .footer-sections{
+      gap:30px;
+    }
+    
+    .bottom-nav{
+      display:block;
+    }
+  }
+
+  @media (max-width: 480px){
+    .sidebar{
+      padding:20px;
+    }
+    
+    .offer-card{
+      padding:20px;
+    }
+    
+    .footer-sections{
+      flex-direction:column;
+      gap:25px;
+    }
+    
+    .toast{
+      right:10px;
+      left:10px;
+      top:10px;
+      max-width:none;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="intro">
+      <div class="flame"></div>
+      <h1>
+        <span class="win">Win</span><span class="cash">cash</span><span class="co-text">.co</span>
+      </h1>
+      
+      <!-- Circular Loader -->
+      <div style="position: relative;">
+        <div class="loader-glow"></div>
+        <div class="circular-loader"></div>
+      </div>
+      
+      <div class="loading">LOADING</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo" onclick="window.location.href='home.html'">
+      <span class="win">Win</span><span>cash</span>.co
+    </div>
+    
+    <div class="user-menu">
+      <div class="user-info" onclick="toggleDropdown()">
+        <div class="user-avatar" id="userAvatar">A</div>
+        <div class="user-name" id="userName">Akash</div>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      
+      <!-- Dropdown Menu -->
+      <div class="dropdown-menu" id="dropdownMenu">
+        <div class="dropdown-item" onclick="showBalance()">
+          <i class="fas fa-wallet"></i>
+          Balance
+        </div>
+        <div class="dropdown-item" onclick="showProfile()">
+          <i class="fas fa-user"></i>
+          Profile
+        </div>
+        <div class="dropdown-item" onclick="showSettings()">
+          <i class="fas fa-cog"></i>
+          Profile Setting
+        </div>
+        <div class="dropdown-item logout" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div class="success-message" id="successMessage">
+    <i class="fas fa-check-circle"></i>
+    Login Successful! Welcome back, Akash!
+  </div>
+
+  <!-- Earnings Ticker -->
+  <div class="ticker-container">
+    <div class="ticker-track">
+      <div class="ticker-item"><span class="ticker-user">rana</span> 700 Task</div>
+      <div class="ticker-item"><span class="ticker-user">nure alam</span> 600 Task</div>
+      <div class="ticker-item"><span class="ticker-user">hafizur</span> 450 Task</div>
+      <div class="ticker-item"><span class="ticker-user">Akash</span> 300 Task</div>
+      <div class="ticker-item"><span class="ticker-user">Somnath</span> 500 Task</div>
+      <div class="ticker-item"><span class="ticker-user">rana</span> 700 Task</div>
+      <div class="ticker-item"><span class="ticker-user">nure alam</span> 600 Task</div>
+      <div class="ticker-item"><span class="ticker-user">hafizur</span> 450 Task</div>
+      <div class="ticker-item"><span class="ticker-user">Akash</span> 300 Task</div>
+      <div class="ticker-item"><span class="ticker-user">Somnath</span> 500 Task</div>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div class="dashboard-container">
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="welcome-section">
+        <h2 id="welcomeMessage">Welcome Back! 👋</h2>
+        <p>Ready to earn more today?</p>
+      </div>
+      
+      <div class="balance-card">
+        <div class="balance-label">Total Balance</div>
+        <div class="balance-amount" id="balanceAmount">$245.50</div>
+        <div class="balance-label">Available to withdraw</div>
+      </div>
+      
+      <div class="quick-stats">
+        <div class="stat-item">
+          <div class="stat-info">
+            <div class="stat-icon">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div>
+              <div>Today's Earnings</div>
+              <div class="stat-value" id="todayEarnings">+$12.50</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-info">
+            <div class="stat-icon">
+              <i class="fas fa-tasks"></i>
+            </div>
+            <div>
+              <div>Tasks Completed</div>
+              <div class="stat-value" id="tasksCompleted">47</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-info">
+            <div class="stat-icon">
+              <i class="fas fa-award"></i>
+            </div>
+            <div>
+              <div>Current Level</div>
+              <div class="stat-value" id="userLevel">Gold</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      
+      <!-- Available Offers -->
+      <div>
+        <h2 class="section-title">
+          <i class="fas fa-gift"></i>
+          Our Partners
+        </h2>
+        <div class="offers-grid" id="offersGrid">
+          <!-- Offers will be loaded by JavaScript -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <span class="win">Win</span><span>cash</span>.co
+      </div>
+      
+      <p class="footer-desc">
+        Wincash is a platform that contains various offerwall content for users to earn real money online.
+      </p>
+
+      <div class="footer-sections">
+        <div class="footer-section">
+          <p class="footer-section-title">Join us</p>
+          <div class="footer-icons">
+            <div class="footer-icon"><i class="fab fa-facebook-f"></i></div>
+            <div class="footer-icon"><i class="fab fa-telegram"></i></div>
+            <div class="footer-icon"><i class="fab fa-whatsapp"></i></div>
+            <div class="footer-icon"><i class="fab fa-youtube"></i></div>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <p class="footer-section-title">Support</p>
+          <div class="footer-icons">
+            <div class="footer-icon"><i class="fab fa-telegram"></i></div>
+            <div class="footer-icon"><i class="fas fa-envelope"></i></div>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <p class="footer-section-title">We are awesome</p>
+          <div class="footer-stars">
+            <i class="fas fa-star footer-star"></i>
+            <i class="fas fa-star footer-star"></i>
+            <i class="fas fa-star footer-star"></i>
+            <i class="fas fa-star footer-star"></i>
+            <i class="fas fa-star footer-star"></i>
+            <i class="fas fa-star footer-star half"></i>
+          </div>
+        </div>
+      </div>
+
+      <p class="copyright">© 2025 Wincash.co - All Rights Reserved</p>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <div class="nav-items">
+      <div class="nav-item">
+        <div class="nav-dots">
+          <div class="nav-dot"></div>
+          <div class="nav-dot"></div>
+          <div class="nav-dot"></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="nav-item">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="nav-item">
+        <i class="fas fa-cog"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <span class="toast-icon" id="toastIcon">✓</span>
+    <span class="toast-message" id="toastMessage">Success!</span>
+    <button class="toast-close" onclick="hideToast()">×</button>
+  </div>
+
+  <script>
+    // Offerwall data
+    const offerwalls = [
+      { id: 1, name: 'Vortexwall', rating: 5, link: 'https://vortexwall.com/offer', color: '#4a5568' },
+      { id: 2, name: 'Notik', rating: 5, link: 'https://notik.com/offers', color: '#4a5568' },
+      { id: 3, name: 'Pubscale', rating: 5, link: 'https://pubscale.com', color: '#4a5568' },
+      { id: 4, name: 'Revtoo', rating: 5, link: 'https://revtoo.com', color: '#4a5568' },
+      { id: 5, name: 'Adgem', rating: 3, link: 'https://adgem.com/offer', color: '#4a5568' },
+      { id: 6, name: 'Upwall', rating: 3, link: 'https://upwall.com', color: '#4a5568' },
+      { id: 7, name: 'Tplayed', rating: 4, link: 'https://cpalead.com', color: '#4a5568' },
+      { id: 8, name: 'Taskwall', rating: 2, link: 'https://taskwall.com', color: '#4a5568' },
+      { id: 9, name: 'Offery', rating: 3, link: 'https://offertoro.com', color: '#4a5568' },
+      { id: 10, name: 'Adtowall', rating: 5, link: 'https://adgatemedia.com', color: '#4a5568' },
+      { id: 11, name: 'Adswed', rating: 1, link: 'https://adswed.com', color: '#4a5568' },
+      { id: 12, name: 'Adrevmedia', rating: 2, link: 'https://adrevmedia.com', color: '#4a5568' },
+      { id: 13, name: 'Revlum', rating: 3, link: 'https://revlum.com', color: '#4a5568' },
+      { id: 14, name: 'Primewall', rating: 2, link: 'https://primewall.com', color: '#4a5568' },
+      { id: 15, name: 'Admantium', rating: 5, link: 'https://admantium.com', color: '#4a5568' },
+      { id: 16, name: 'Wannads', rating: 5, link: 'https://wannads.com', color: '#4a5568' },
+      { id: 17, name: 'Timewal', rating: 2, link: 'https://timewal.com', color: '#4a5568' },
+      { id: 18, name: 'Monlix', rating: 1, link: 'https://monlix.com', color: '#4a5568' },
+      { id: 19, name: 'Lootably', rating: 4, link: 'https://lootably.com', color: '#4a5568' },
+      { id: 20, name: 'Adspiritmedia', rating: 2, link: 'https://adspiritmedia.com', color: '#4a5568' },
+      { id: 21, name: 'Adfleetmedia', rating: 1, link: 'https://adfleetmedia.com', color: '#4a5568' },
+      { id: 22, name: 'Sushiads', rating: 5, link: 'https://sushiads.com', color: '#4a5568' },
+      { id: 23, name: 'Adbreakmedia', rating: 2, link: 'https://adbreakmedia.com', color: '#4a5568' },
+      { id: 24, name: 'Radiantwall', rating: 2, link: 'https://radiantwall.com', color: '#4a5568' }
+    ];
+
+    // Get logged in user data
+    function getLoggedInUser() {
+      // Try to get from localStorage first
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      
+      if (currentUser && currentUser.username) {
+        return currentUser;
+      }
+      
+      // If no user in localStorage, check if there's any user data
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      if (users.length > 0) {
+        return users[0]; // Return first user
+      }
+      
+      // Default fallback data
+      return {
+        username: 'Akash',
+        email: 'akash@example.com',
+        balance: 245.50,
+        todayEarnings: 12.50,
+        tasksCompleted: 47,
+        level: 'Gold'
+      };
+    }
+
+    // Update user info throughout the dashboard
+    function updateUserInfo() {
+      const user = getLoggedInUser();
+      
+      // Update header
+      const userAvatar = document.getElementById('userAvatar');
+      const userName = document.getElementById('userName');
+      if (userAvatar) userAvatar.textContent = user.username.charAt(0).toUpperCase();
+      if (userName) userName.textContent = user.username;
+      
+      // Update welcome message
+      const welcomeMessage = document.getElementById('welcomeMessage');
+      if (welcomeMessage) welcomeMessage.textContent = `Welcome Back, ${user.username}! 👋`;
+      
+      // Update balance and stats
+      const balanceAmount = document.getElementById('balanceAmount');
+      const todayEarnings = document.getElementById('todayEarnings');
+      const tasksCompleted = document.getElementById('tasksCompleted');
+      const userLevel = document.getElementById('userLevel');
+      
+      if (balanceAmount) balanceAmount.textContent = `$${(user.balance || 0).toFixed(2)}`;
+      if (todayEarnings) todayEarnings.textContent = `+$${(user.todayEarnings || 0).toFixed(2)}`;
+      if (tasksCompleted) tasksCompleted.textContent = user.tasksCompleted || '0';
+      if (userLevel) userLevel.textContent = user.level || 'Bronze';
+      
+      // Update success message
+      const successMessage = document.getElementById('successMessage');
+      if (successMessage) {
+        successMessage.innerHTML = `<i class="fas fa-check-circle"></i> Login Successful! Welcome back, ${user.username}!`;
+      }
+    }
+
+    // Initialize dashboard after loading
+    setTimeout(() => {
+      document.getElementById('loadingScreen').style.display = 'none';
+      loadOfferwalls();
+      updateUserInfo(); // This will update all user information
+    }, 2000);
+
+    // Load offerwalls
+    function loadOfferwalls() {
+      const offersGrid = document.getElementById('offersGrid');
+      offersGrid.innerHTML = '';
+      
+      offerwalls.forEach(wall => {
+        const offerCard = document.createElement('div');
+        offerCard.className = 'offer-card';
+        offerCard.onclick = () => handleOfferwallClick(wall.link);
+        
+        const stars = Array.from({length: 5}, (_, i) => 
+          `<i class="fas fa-star star ${i < wall.rating ? 'filled' : ''}"></i>`
+        ).join('');
+        
+        offerCard.innerHTML = `
+          <h3 class="offer-name">${wall.name}</h3>
+          <div class="stars">${stars}</div>
+        `;
+        
+        offersGrid.appendChild(offerCard);
+      });
+    }
+
+    // User dropdown functionality
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    window.addEventListener('click', function(event) {
+      const menu = document.getElementById('dropdownMenu');
+      const userInfo = document.querySelector('.user-info');
+      
+      if (!userInfo.contains(event.target) && !menu.contains(event.target)) {
+        menu.classList.remove('show');
+      }
+    });
+
+    // Dropdown menu functions
+    function showBalance() {
+      const user = getLoggedInUser();
+      showToast(`Your current balance: $${(user.balance || 0).toFixed(2)}`, 'success');
+      toggleDropdown();
+    }
+
+    function showProfile() {
+      const user = getLoggedInUser();
+      showToast(`Profile: ${user.username} (${user.email})`, 'success');
+      toggleDropdown();
+    }
+
+    function showSettings() {
+      showToast('Settings page coming soon!', 'error');
+      toggleDropdown();
+    }
+
+    function logout() {
+      showToast('Logging out...', 'success');
+      setTimeout(() => {
+        window.location.href = 'home.html';
+      }, 1500);
+      toggleDropdown();
+    }
+
+    // Offer functionality
+    function handleOfferwallClick(link) {
+      showToast('Redirecting to offer...', 'success');
+      setTimeout(() => {
+        window.open(link, '_blank');
+      }, 1000);
+    }
+
+    // Toast functionality
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
+      
+      toast.classList.remove('success', 'error');
+      
+      if (type === 'success') {
+        toastIcon.textContent = '✓';
+        toast.classList.add('success');
+      } else if (type === 'error') {
+        toastIcon.textContent = '✕';
+        toast.classList.add('error');
+      }
+      
+      toastMessage.textContent = message;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        hideToast();
+      }, 3000);
+    }
+
+    function hideToast() {
+      document.getElementById('toast').classList.remove('show');
+    }
+
+    // Auto-hide success message after 5 seconds
+    setTimeout(() => {
+      const successMsg = document.getElementById('successMessage');
+      if (successMsg) {
+        successMsg.style.display = 'none';
+      }
+    }, 5000);
+  </script>
+
+</body>
+</html>

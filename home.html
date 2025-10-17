@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wincash - Earn Money Online</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root{
+    --bg:#0b0b20;
+    --header:#151532;
+    --card:#1d1f2e;
+    --accent:#b8a3ff;
+    --green:#33ff77;
+    --offer-bg:#191943;
+  }
+
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+
+  body{
+    font-family:'Poppins', sans-serif;
+    background:var(--bg);
+    color:white;
+    overflow-x:hidden;
+    min-height:100vh;
+    width: 100%;
+  }
+
+  /* 🔥 Loading Screen */
+  .loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+  }
+
+  .loading-screen.show {
+    display: flex;
+  }
+
+  .intro {
+    text-align: center;
+    position: relative;
+  }
+
+  .intro h1 {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 65px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 0;
+    animation: glow 2.5s infinite alternate;
+  }
+
+  .intro h1 .win {
+    color: white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 25px rgba(255, 255, 255, 0.4);
+  }
+
+  .intro h1 .cash {
+    color: #33ff77;
+    font-style: italic;
+    text-shadow: 0 0 10px rgba(51, 255, 119, 0.6), 0 0 25px rgba(51, 255, 119, 0.4), 0 0 45px rgba(0, 255, 204, 0.3);
+  }
+
+  @keyframes glow {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+  }
+
+  .flame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(51,255,119,0.3) 10%, transparent 60%);
+    border-radius: 50%;
+    filter: blur(40px);
+    transform: translate(-50%, -50%);
+    animation: flameMove 2.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes flameMove {
+    0% { transform: translate(-50%, -52%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -48%) scale(1.1); opacity: 0.8; }
+    100% { transform: translate(-50%, -52%) scale(1); opacity: 0.6; }
+  }
+
+  .loading {
+    font-size: 14px;
+    color: #b8a3ff;
+    margin-top: 20px;
+    letter-spacing: 2px;
+    font-weight: 300;
+  }
+
+  .co-text {
+    color: #b8a3ff;
+    font-size: 24px;
+    margin-left: 5px;
+  }
+
+  .circular-loader {
+    width: 50px;
+    height: 50px;
+    margin: 20px auto;
+    position: relative;
+  }
+
+  .circular-loader::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-top: 3px solid #33ff77;
+    border-right: 3px solid #00ffcc;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .circular-loader::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid transparent;
+    border-bottom: 2px solid #b8a3ff;
+    border-left: 2px solid #b8a3ff;
+    border-radius: 50%;
+    animation: spinReverse 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes spinReverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+
+  .loader-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle, rgba(51,255,119,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(10px);
+    transform: translate(-50%, -50%);
+    animation: pulseGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.9); }
+    100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+  }
+
+  /* Header */
+  .header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 5%;
+    background:var(--header);
+    box-shadow:0 2px 15px rgba(0,0,0,0.4);
+    position:sticky;
+    top:0;
+    z-index:100;
+    width: 100%;
+  }
+
+  .logo{
+    font-size:28px;
+    font-weight:600;
+    font-family:'Brush Script MT', cursive;
+    cursor:pointer;
+    white-space: nowrap;
+  }
+
+  .logo .win{color:white;}
+  .logo span{color:var(--green); font-style:italic;}
+
+  .header-right{
+    display:flex;
+    gap:15px;
+    align-items:center;
+  }
+
+  /* Auth Buttons */
+  .auth-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .auth-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .login-btn {
+    background: transparent;
+    color: var(--green);
+    border: 2px solid var(--green);
+  }
+
+  .login-btn:hover {
+    background: rgba(51, 255, 119, 0.1);
+    box-shadow: 0 0 15px rgba(51, 255, 119, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .signup-btn {
+    background: linear-gradient(45deg, var(--green), #00ffcc);
+    color: #0b0b20;
+  }
+
+  .signup-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(51, 255, 119, 0.4);
+  }
+
+  /* User Welcome Styles */
+  .user-welcome {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--green);
+    font-weight: 600;
+    padding: 10px 15px;
+    background: rgba(51, 255, 119, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(51, 255, 119, 0.3);
+  }
+
+  .user-welcome i {
+    font-size: 18px;
+  }
+
+  /* Moving Offers */
+  .offer-container{
+    width:100%;
+    background:#0f0f2f;
+    white-space:nowrap;
+    overflow:hidden;
+    padding:12px 0;
+    border-bottom:1px solid #1f1f3f;
+  }
+
+  .offer-track{
+    display:inline-block;
+    animation:moveLeft 50s linear infinite;
+    padding-left:100%;
+  }
+
+  .offer{
+    display:inline-block;
+    background:var(--offer-bg);
+    padding:10px 18px;
+    margin:0 10px;
+    border-radius:8px;
+    border:1px solid #333366;
+    font-size:15px;
+  }
+
+  .offer span{
+    color:#00ff99;
+    font-weight:bold;
+  }
+
+  @keyframes moveLeft{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-100%);}
+  }
+
+  /* Hero Section */
+  .hero{
+    text-align:center;
+    padding:80px 5%;
+    background:linear-gradient(135deg, rgba(21,21,50,0.8), rgba(11,11,32,0.9));
+    width: 100%;
+  }
+
+  .hero h1{
+    font-size:48px;
+    margin-bottom:25px;
+    background:linear-gradient(90deg, white, var(--green));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    line-height:1.2;
+  }
+
+  .hero p{
+    font-size:20px;
+    color:#bbb;
+    margin-bottom:40px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .hero-buttons{
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .hero-btn{
+    padding:16px 40px;
+    font-size:18px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.3s;
+    text-decoration:none;
+    display:inline-block;
+    border:none;
+    font-family:'Poppins', sans-serif;
+  }
+
+  .primary-btn{
+    background:var(--accent);
+    color:black;
+  }
+
+  .primary-btn:hover{
+    background:#c7b7ff;
+    transform:translateY(-3px);
+    box-shadow:0 8px 25px rgba(179,163,255,0.5);
+  }
+
+  .secondary-btn{
+    background:transparent;
+    border:2px solid var(--accent);
+    color:white;
+  }
+
+  .secondary-btn:hover{
+    background:rgba(179,163,255,0.2);
+    transform:translateY(-3px);
+  }
+
+  /* Cards Grid */
+  .container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));
+    gap:30px;
+    margin-bottom:60px;
+    width: 100%;
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:15px;
+    text-align:center;
+    padding:50px 30px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    transition:all 0.3s;
+    border:1px solid rgba(255,255,255,0.05);
+  }
+
+  .card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 15px 35px rgba(0,0,0,0.5);
+    border-color:rgba(179,163,255,0.3);
+  }
+
+  .card-icon{
+    font-size:60px;
+    margin-bottom:25px;
+  }
+
+  .card h2{
+    margin:20px 0 15px 0;
+    font-size:28px;
+  }
+
+  .card p{
+    color:#bbb;
+    font-size:16px;
+    line-height:1.7;
+  }
+
+  /* Join Section */
+  .join-section{
+    background:rgba(30,30,50,0.8);
+    border-radius:20px;
+    padding:60px 50px;
+    margin:0 auto;
+    text-align:center;
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+    border:1px solid rgba(255,255,255,0.1);
+    width: 100%;
+  }
+
+  .join-logo{
+    font-size:42px;
+    margin-bottom:20px;
+    font-family:'Brush Script MT', cursive;
+  }
+
+  .join-logo .lucky{color:#fff;}
+  .join-logo .cash{color:#00ff88; font-style:italic;}
+
+  .description{
+    font-size:18px;
+    margin-bottom:35px;
+    line-height:1.6;
+    color:#ddd;
+  }
+
+  .section-title{
+    font-size:32px;
+    margin-bottom:25px;
+    font-weight:600;
+  }
+
+  .social-icons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-bottom:40px;
+    flex-wrap:wrap;
+  }
+
+  .icon-box{
+    width:60px;
+    height:60px;
+    background:rgba(139,139,255,0.6);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:all 0.3s;
+  }
+
+  .icon-box:hover{
+    background:rgba(139,139,255,0.9);
+    transform:translateY(-5px) scale(1.1);
+  }
+
+  .icon-box svg{
+    width:28px;
+    height:28px;
+    fill:#1a1a2e;
+  }
+
+  .stars{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin:20px 0;
+  }
+
+  .star{
+    width:40px;
+    height:40px;
+  }
+
+  .star svg{
+    width:100%;
+    height:100%;
+    fill:rgba(139,139,255,0.8);
+  }
+
+  /* Footer */
+  .footer{
+    background:var(--header);
+    text-align:center;
+    padding:30px 0;
+    margin-top:80px;
+    width: 100%;
+  }
+
+  .footer-content{
+    font-size:16px;
+    color:#999;
+  }
+
+  /* Login Modal */
+  .modal{
+    display:none;
+    position:fixed;
+    z-index:1000;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.85);
+    animation:fadeIn 0.3s;
+  }
+
+  .modal.show{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+
+  .modal-content{
+    background:var(--header);
+    padding:40px 35px;
+    border-radius:20px;
+    width:90%;
+    max-width:450px;
+    position:relative;
+    animation:slideDown 0.3s;
+    box-shadow:0 15px 50px rgba(0,0,0,0.6);
+  }
+
+  .modal-content h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 28px;
+    background: linear-gradient(90deg, white, var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .modal-content p {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #bbb;
+  }
+
+  .modal-content input[type="text"],
+  .modal-content input[type="password"] {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #333366;
+    background: rgba(30, 30, 50, 0.8);
+    color: white;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s;
+  }
+
+  .modal-content input[type="text"]:focus,
+  .modal-content input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(184, 163, 255, 0.3);
+  }
+
+  .remember {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .remember input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+  }
+
+  .modal-content button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(45deg, var(--green), #00ffcc);
+    color: #0b0b20;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+
+  .modal-content button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(51, 255, 119, 0.4);
+  }<!-- Login Modal-এর form-এর পরে add করুন -->
+<p style="text-align: center; margin-top: 15px;">
+  <a href="forgot-password.html" style="color: var(--accent); text-decoration: none;">
+    Forgot Password?
+  </a>
+</p>
+
+  .modal-content a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .modal-content a:hover {
+    color: #c7b7ff;
+    text-decoration: underline;
+  }
+
+  @keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+  }
+
+  @keyframes slideDown{
+    from{transform:translateY(-80px); opacity:0;}
+    to{transform:translateY(0); opacity:1;}
+  }
+
+  /* 🔥 NEW MODERN CLOSE BUTTON */
+  .close-btn{
+    position:absolute;
+    right:20px;
+    top:20px;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1001;
+  }
+
+  .close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--accent);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(184, 163, 255, 0.5);
+  }
+
+  .close-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Toast */
+  .toast{
+    position:fixed;
+    top:25px;
+    right:25px;
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color:white;
+    padding:18px 30px;
+    border-radius:12px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.4);
+    display:none;
+    align-items:center;
+    gap:15px;
+    z-index:2000;
+    animation:slideInToast 0.4s;
+    max-width:380px;
+  }
+
+  .toast.show{display:flex;}
+
+  @keyframes slideInToast {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .toast-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Shake Animation for Errors */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  .shake {
+    animation: shake 0.3s ease-in-out;
+  }
+
+  /* 🔥 ADMIN SECRET BUTTON */
+  .admin-secret-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 51, 102, 0.1);
+    border: 1px solid rgba(255, 51, 102, 0.3);
+    border-radius: 50%;
+    color: #ff3366;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 9998;
+    transition: all 0.3s;
+  }
+
+  .admin-secret-btn:hover {
+    background: rgba(255, 51, 102, 0.3);
+    transform: scale(1.1);
+  }
+
+  /* 🔥🔥🔥 DESKTOP FIX - Full Screen Layout */
+  @media (min-width: 768px) {
+    body {
+      display: block;
+    }
+    
+    .header {
+      padding: 20px 8%;
+    }
+    
+    .logo {
+      font-size: 36px;
+    }
+    
+    .auth-btn {
+      padding: 15px 30px;
+      font-size: 16px;
+    }
+    
+    .hero {
+      padding: 120px 10%;
+    }
+    
+    .hero h1 {
+      font-size: 64px;
+    }
+    
+    .hero p {
+      font-size: 24px;
+      max-width: 700px;
+    }
+    
+    .hero-btn {
+      padding: 18px 50px;
+      font-size: 20px;
+    }
+    
+    .page-wrapper {
+      padding: 80px 8%;
+      max-width: none;
+    }
+    
+    .container {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: none;
+    }
+    
+    .card {
+      padding: 60px 40px;
+    }
+    
+    .card h2 {
+      font-size: 32px;
+    }
+    
+    .card p {
+      font-size: 18px;
+    }
+    
+    .join-section {
+      max-width: 900px;
+      padding: 70px 60px;
+    }
+    
+    .join-logo {
+      font-size: 48px;
+    }
+    
+    .description {
+      font-size: 20px;
+    }
+    
+    .section-title {
+      font-size: 36px;
+    }
+    
+    .social-icons {
+      gap: 30px;
+    }
+    
+    .icon-box {
+      width: 70px;
+      height: 70px;
+    }
+  }
+
+  /* Large Desktop */
+  @media (min-width: 1200px) {
+    .hero h1 {
+      font-size: 72px;
+    }
+    
+    .hero {
+      padding: 150px 15%;
+    }
+    
+    .page-wrapper {
+      padding: 100px 10%;
+    }
+    
+    .container {
+      gap: 50px;
+    }
+    
+    .join-section {
+      max-width: 1000px;
+      padding: 80px 70px;
+    }
+  }
+
+  /* Extra Large Desktop */
+  @media (min-width: 1600px) {
+    .hero h1 {
+      font-size: 84px;
+    }
+    
+    .page-wrapper {
+      padding: 120px 15%;
+    }
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 767px){
+    .header{
+      padding:12px 15px;
+    }
+    
+    .logo{
+      font-size:24px;
+    }
+    
+    .auth-btn{
+      padding:10px 15px;
+      font-size:14px;
+    }
+    
+    .hero{
+      padding:50px 20px;
+    }
+    
+    .hero h1{
+      font-size:32px;
+    }
+    
+    .hero p{
+      fontSize:16px;
+    }
+    
+    .hero-btn{
+      padding:12px 25px;
+      font-size:16px;
+    }
+    
+    .page-wrapper{
+      padding:30px 15px;
+    }
+    
+    .container{
+      grid-template-columns:1fr;
+      gap:20px;
+    }
+    
+    .card{
+      padding:30px 20px;
+    }
+    
+    .card h2{
+      font-size:24px;
+    }
+    
+    .join-section{
+      padding:30px 20px;
+    }
+    
+    .join-logo{
+      font-size:32px;
+    }
+    
+    .section-title{
+      font-size:24px;
+    }
+    
+    .icon-box{
+      width:50px;
+      height:50px;
+    }
+    
+    .modal-content {
+      padding: 30px 25px;
+    }
+    
+    .close-btn {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      right: 15px;
+      top: 15px;
+    }
+  }
+
+  @media (max-width: 480px){
+    .auth-buttons{
+      flex-direction:column;
+      gap:8px;
+    }
+    
+    .auth-btn{
+      padding:8px 12px;
+      font-size:13px;
+    }
+    
+    .hero h1{
+      font-size:28px;
+    }
+    
+    .hero-buttons{
+      flex-direction:column;
+      align-items:center;
+    }
+    
+    .hero-btn{
+      width:100%;
+      max-width:250px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- 🔥 Loading Screen for Sign Up -->
+  <div class="loading-screen" id="signupLoading">
+    <div class="intro">
+      <div class="flame"></div>
+      <h1>
+        <span class="win">Win</span><span class="cash">cash</span><span class="co-text">.co</span>
+      </h1>
+      
+      <!-- Circular Loader -->
+      <div style="position: relative;">
+        <div class="loader-glow"></div>
+        <div class="circular-loader"></div>
+      </div>
+      
+      <div class="loading">LOADING</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo" onclick="window.location.href='home.html'">
+      <span class="win">Win</span><span>cash</span>.co
+    </div>
+    
+    <div class="header-right">
+      <div class="auth-buttons">
+        <button class="auth-btn login-btn" onclick="openLoginModal()">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Sign In</span>
+        </button>
+        <!-- 🔥 Updated Sign Up Link -->
+        <a href="#" class="auth-btn signup-btn" onclick="goToSignup()">
+          <i class="fas fa-user-plus"></i>
+          <span>Sign Up</span>
+        </a>
+      </div>
+      
+      <!-- 🔥 ADMIN BUTTON (শুধু আপনার জন্য দেখাবে) -->
+      <a href="admin.html" class="auth-btn" id="adminMainButton" style="background: #ff3366; color: white; display: none;">
+        <i class="fas fa-crown"></i>
+        <span>Admin</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Moving Offers -->
+  <div class="offer-container">
+    <div class="offer-track">
+      <div class="offer">🎉 <span>rana</span> earned $70 from 700 Tasks</div>
+      <div class="offer">💰 <span>nure alam</span> withdrew $60</div>
+      <div class="offer">⭐ <span>hafizur</span> completed 450 Tasks</div>
+      <div class="offer">🔥 <span>Akash</span> earned $30 today</div>
+      <div class="offer">✨ <span>Hsdtfr</span> cashed out $50</div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <h1>Get Paid For Playing Games</h1>
+    <p>Complete tasks, play games, take surveys and earn real money!</p>
+    <div class="hero-buttons">
+      <!-- 🔥 Updated Hero Sign Up Button -->
+      <a href="#" class="hero-btn primary-btn" onclick="goToSignup()">Start Earning Now</a>
+      <button class="hero-btn secondary-btn" onclick="openLoginModal()">I Have Account</button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="page-wrapper">
+    
+    <!-- Cards -->
+    <div class="container">
+      <div class="card">
+        <div class="card-icon">👳</div>
+        <h2>Sign Up</h2>
+        <p>Create an account now and start earning coin right away with our quick and easy sign up process!</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <h2>Earn Coin</h2>
+        <p>Earn coin by completing various offers, providing feedback through surveys, or watching videos.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">💵</div>
+        <h2>Redeem Reward</h2>
+        <p>Exchange your hard-earned coin for exciting rewards, including Bitcoin, Litecoin and PayPal cash!</p>
+      </div>
+    </div>
+
+    <!-- Join Section -->
+    <div class="join-section">
+      <div class="join-logo">
+        <span class="lucky">Win</span><span class="cash">Cash</span>
+      </div>
+
+      <p class="description">
+        Wincash is a platform that contains various offerwall content for users to earn real money online.
+      </p>
+
+      <h2 class="section-title">Join us</h2>
+      
+      <div class="social-icons">
+        <div class="icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
+        </div>
+        <div class="icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M248,8C111.033,8,0,119.033,0,256S111.033,504,248,504,496,392.967,496,256,384.967,8,248,8ZM362.952,176.66c-3.732,39.215-19.881,134.378-28.1,178.3-3.476,18.584-10.322,24.816-16.948,25.425-14.4,1.326-25.338-9.517-39.287-18.661-21.827-14.308-34.158-23.215-55.346-37.177-24.485-16.135-8.612-25,5.342-39.5,3.652-3.793,67.107-61.51,68.335-66.746.153-.655.3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283.746-104.608,69.142-14.845,10.194-26.894,9.934c-8.855-.191-25.888-5.006-38.551-9.123-15.531-5.048-27.875-7.717-26.8-16.291q.84-6.7,18.45-13.7,108.446-47.248,144.628-62.3c68.872-28.647,83.183-33.623,92.511-33.789,2.052-.034,6.639.474,9.61,2.885a10.452,10.452,0,0,1,3.53,6.716A43.765,43.765,0,0,1,362.952,176.66Z"/></svg>
+        </div>
+        <div class="icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+        </div>
+      </div>
+
+      <div class="rating">
+        <h2 class="section-title">We are awesome</h2>
+        <div class="stars">
+          <div class="star"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"/></svg></div>
+          <div class="star"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"/></svg></div>
+          <div class="star"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"/></svg></div>
+          <div class="star"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"/></svg></div>
+          <div class="star"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-content">
+      © 2025 Wincash.co - All Rights Reserved
+    </div>
+  </div>
+
+  <!-- 🔥 SECRET ADMIN ACTIVATOR -->
+  <div class="admin-secret-btn" onclick="activateAdminMode()" title="Click to activate Admin Mode">
+    👑
+  </div>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+      <h2>Welcome Back!</h2>
+      <p>Sign in to continue earning</p>
+
+      <!-- 🔥 Updated Form with Validation -->
+      <form onsubmit="validateLogin(event)">
+        <input type="text" id="loginUsername" placeholder="Username or Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+
+        <div class="remember">
+          <input type="checkbox" id="rememberMe" checked> Remember me
+        </div>
+
+        <button type="submit">Sign In</button>
+      </form>
+      
+      <p style="margin-top:20px;">
+        Don't have an account? <a href="#" onclick="goToSignup()">Create one now</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <span class="toast-icon" id="toastIcon">✓</span>
+    <span class="toast-message" id="toastMessage">Success!</span>
+    <button class="toast-close" onclick="hideToast()">×</button>
+  </div>
+
+  <script>
+    // 🔥 ADMIN SYSTEM - শুধু আপনার জন্য
+    function setupAdminSystem() {
+      // Check if admin mode is activated
+      const isAdminMode = localStorage.getItem('adminMode') === 'activated';
+      
+      if (isAdminMode) {
+        // Show admin button
+        document.getElementById('adminMainButton').style.display = 'flex';
+      }
+    }
+
+    function activateAdminMode() {
+      localStorage.setItem('adminMode', 'activated');
+      document.getElementById('adminMainButton').style.display = 'flex';
+      showToast('Admin mode activated! 👑', 'success');
+    }
+
+    // 🔥 Complete Login Validation System
+    function validateLogin(event) {
+      event.preventDefault(); // Prevent form submission
+      
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      // ✅ Validation Checks
+      if (!username) {
+        showToast('Please enter your username or email!', 'error');
+        document.getElementById('loginUsername').focus();
+        return;
+      }
+
+      if (!password) {
+        showToast('Please enter your password!', 'error');
+        document.getElementById('loginPassword').focus();
+        return;
+      }
+
+      if (password.length < 6) {
+        showToast('Password must be at least 6 characters!', 'error');
+        document.getElementById('loginPassword').focus();
+        return;
+      }
+
+      // ✅ Authenticate User
+      authenticateUser(username, password);
+    }
+
+    function authenticateUser(username, password) {
+      // ✅ Get users from localStorage
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      
+      // ✅ Find user by username or email
+      const user = users.find(u => 
+        (u.username === username || u.email === username) && 
+        u.password === password
+      );
+
+      if (!user) {
+        showToast('Invalid username or password!', 'error');
+        
+        // 🔥 Add shake animation for wrong credentials
+        const inputs = document.querySelectorAll('#loginUsername, #loginPassword');
+        inputs.forEach(input => {
+          input.style.borderColor = '#ff6b6b';
+          input.classList.add('shake');
+          setTimeout(() => {
+            input.classList.remove('shake');
+          }, 500);
+        });
+        
+        return;
+      }
+
+      // ✅ Login Successful
+      showToast(`Welcome back, ${user.username}! Redirecting...`, 'success');
+      
+      // ✅ Save user session
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      
+      // ✅ Close modal and redirect to dashboard
+      setTimeout(() => {
+        closeLoginModal();
+        window.location.href = 'dashboard.html';
+      }, 2000);
+    }
+
+    // 🔥 Check if user is already logged in
+    function checkExistingLogin() {
+      const currentUser = localStorage.getItem('currentUser');
+      
+      if (currentUser) {
+        // User already logged in, show different UI
+        const userData = JSON.parse(currentUser);
+        updateHeaderForLoggedInUser(userData);
+      }
+    }
+
+    // 🔥 Update header when user is logged in
+    function updateHeaderForLoggedInUser(userData) {
+      const authButtons = document.querySelector('.auth-buttons');
+      
+      if (authButtons && userData) {
+        authButtons.innerHTML = `
+          <div class="user-welcome">
+            <i class="fas fa-user-circle"></i>
+            <span>Hi, ${userData.username}</span>
+          </div>
+          <a href="dashboard.html" class="auth-btn signup-btn">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+          <button class="auth-btn login-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </button>
+        `;
+      }
+    }
+
+    // 🔥 Logout Function
+    function logout() {
+      localStorage.removeItem('currentUser');
+      showToast('Successfully logged out!', 'success');
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
+
+    // 🔥 Existing functions (same as before)
+    function goToSignup() {
+      document.getElementById('signupLoading').classList.add('show');
+      
+      setTimeout(() => {
+        window.location.href = 'signup.html';
+      }, 2000);
+      
+      return false;
+    }
+
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.add('show');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('show');
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
+      
+      toast.classList.remove('success', 'error');
+      toast.classList.add(type);
+      toastMessage.textContent = message;
+      toastIcon.textContent = type === 'success' ? '✓' : '⚠️';
+      
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        hideToast();
+      }, 4000);
+    }
+
+    function hideToast() {
+      document.getElementById('toast').classList.remove('show');
+    }
+
+    // 🔥 Page load events
+    window.addEventListener('DOMContentLoaded', function() {
+      checkExistingLogin();
+      setupAdminSystem(); // Admin system setup
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+      const modal = document.getElementById('loginModal');
+      if (event.target === modal) {
+        closeLoginModal();
+      }
+    });
+  </script>
+</body>
+</html>
